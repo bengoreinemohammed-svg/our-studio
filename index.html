@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OUR STUDIO — استوديو الألعاب</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+  <style>
+    /* ===== RESET ===== */
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; }
+ 
+    /* ===== BASE ===== */
+    body { background-color: #0b0b0b; color: #ffffff; }
+ 
+    /* ===== HEADER ===== */
+    .main-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 5%;
+      background-color: #000000;
+      border-bottom: 1px solid #1c1c1c;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+ 
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 900;
+      letter-spacing: 2px;
+      color: #ff0000;
+    }
+ 
+    .nav-links a {
+      color: #aaaaaa;
+      text-decoration: none;
+      margin-right: 25px;
+      font-weight: 700;
+      transition: color 0.3s;
+    }
+    .nav-links a:hover,
+    .nav-links a.active { color: #ffffff; }
+ 
+    /* ===== HERO ===== */
+    .hero {
+      background: linear-gradient(160deg, #1a0000 0%, #0b0b0b 70%);
+      border-bottom: 1px solid #1c1c1c;
+      padding: 52px 5% 44px;
+      text-align: center;
+    }
+    .hero-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .12em;
+      color: #ff4444;
+      background: rgba(255,0,0,.1);
+      border: 1px solid rgba(255,0,0,.25);
+      border-radius: 20px;
+      padding: 4px 16px;
+      margin-bottom: 16px;
+      text-transform: uppercase;
+    }
+    .hero h1 {
+      font-size: clamp(24px, 5vw, 42px);
+      font-weight: 900;
+      line-height: 1.2;
+      margin-bottom: 10px;
+    }
+    .hero h1 span { color: #ff0000; }
+    .hero p { font-size: 14px; color: #888; max-width: 420px; margin: 0 auto; }
+ 
+    /* ===== FILTERS ===== */
+    .filters-bar {
+      display: flex;
+      gap: 8px;
+      padding: 24px 5% 0;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .filter-chip {
+      font-size: 13px;
+      font-weight: 700;
+      padding: 7px 18px;
+      border-radius: 4px;
+      border: 1px solid #2a2a2a;
+      background: #161616;
+      color: #888;
+      cursor: pointer;
+      transition: all .2s;
+      font-family: 'Cairo', sans-serif;
+    }
+    .filter-chip:hover { border-color: #ff0000; color: #fff; }
+    .filter-chip.active { background: #ff0000; border-color: #ff0000; color: #fff; }
+ 
+    /* ===== MAIN CONTAINER ===== */
+    .store-container { padding: 30px 5% 60px; }
+ 
+    .section-title {
+      font-size: 1.6rem;
+      font-weight: 900;
+      margin-bottom: 28px;
+      border-right: 5px solid #ff0000;
+      padding-right: 15px;
+      color: #fff;
+    }
+ 
+    /* ===== GAMES GRID ===== */
+    .games-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 28px;
+    }
+ 
+    /* ===== GAME CARD ===== */
+    .game-card {
+      background-color: #161616;
+      border-radius: 8px;
+      overflow: hidden;
+      transition: transform 0.3s, box-shadow 0.3s;
+      cursor: pointer;
+      border: 1px solid #1c1c1c;
+    }
+    .game-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(0,0,0,.6), 0 0 0 1px rgba(255,0,0,.15);
+    }
+ 
+    /* POSTER */
+    .poster-container {
+      position: relative;
+      width: 100%;
+      padding-top: 135%;
+      overflow: hidden;
+      background: #111;
+    }
+    .game-poster {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s;
+    }
+    .game-card:hover .game-poster { transform: scale(1.05); }
+ 
+    /* PLACEHOLDER */
+    .poster-placeholder {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 64px;
+      background: linear-gradient(135deg, #1a0000, #0b0b0b);
+    }
+ 
+    /* OVERLAY */
+    .hover-overlay {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.65);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .game-card:hover .hover-overlay { opacity: 1; }
+ 
+    .btn-download {
+      background-color: #ffffff;
+      color: #000000;
+      border: none;
+      padding: 12px 28px;
+      font-size: 1rem;
+      font-weight: 700;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.2s, color 0.2s;
+      font-family: 'Cairo', sans-serif;
+    }
+    .btn-download:hover { background-color: #ff0000; color: #ffffff; }
+    .btn-download.done { background-color: #1a6e3a; color: #fff; }
+ 
+    .btn-rate {
+      background: transparent;
+      color: #ffca28;
+      border: 1px solid #ffca28;
+      padding: 9px 22px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: 'Cairo', sans-serif;
+    }
+    .btn-rate:hover { background: #ffca28; color: #000; }
+ 
+    /* BADGE */
+    .badge-new {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: #ff0000;
+      color: #fff;
+      font-size: 10px;
+      font-weight: 900;
+      padding: 3px 10px;
+      border-radius: 3px;
+      letter-spacing: .08em;
+    }
+ 
+    /* GAME INFO */
+    .game-info { padding: 18px 20px 20px; }
+    .game-name {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .game-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #888888;
+      font-size: 0.85rem;
+    }
+    .game-rating { color: #ffca28; font-weight: 700; }
+    .rating-count { color: #555; font-size: 11px; font-weight: 400; }
+    .game-platform {
+      font-size: 11px;
+      background: #222;
+      border: 1px solid #2a2a2a;
+      border-radius: 3px;
+      padding: 2px 8px;
+      color: #888;
+    }
+    .game-downloads {
+      font-size: 12px;
+      color: #555;
+      margin-top: 8px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+ 
+    /* ===== RATING MODAL ===== */
+    .modal-bg {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,.8);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 200; padding: 16px;
+    }
+    .modal {
+      background: #161616;
+      border: 1px solid #2a2a2a;
+      border-radius: 8px;
+      padding: 28px;
+      width: 100%; max-width: 360px;
+      animation: popIn .2s ease;
+    }
+    @keyframes popIn {
+      from { opacity:0; transform:scale(.93) translateY(10px); }
+      to   { opacity:1; transform:scale(1)  translateY(0); }
+    }
+    .modal h3 {
+      font-size: 1.2rem;
+      font-weight: 900;
+      margin-bottom: 20px;
+      border-right: 4px solid #ff0000;
+      padding-right: 12px;
+    }
+    .form-row { margin-bottom: 14px; }
+    .form-row label { font-size: 13px; color: #888; display: block; margin-bottom: 6px; font-weight: 700; }
+    .form-row input, .form-row textarea {
+      width: 100%; font-size: 14px; padding: 10px 13px;
+      border-radius: 4px; border: 1px solid #2a2a2a;
+      background: #0b0b0b; color: #fff;
+      outline: none; font-family: 'Cairo', sans-serif;
+      transition: border-color .15s;
+    }
+    .form-row input:focus, .form-row textarea:focus { border-color: #ff0000; }
+    .star-picker { display: flex; gap: 8px; }
+    .sp { font-size: 32px; cursor: pointer; color: #333; transition: color .1s; }
+    .sp.on { color: #ffca28; }
+    .modal-actions { display: flex; gap: 10px; margin-top: 22px; }
+    .modal-actions button {
+      flex: 1; padding: 11px; border-radius: 4px;
+      font-size: 14px; font-weight: 700; cursor: pointer; font-family: 'Cairo', sans-serif;
+    }
+    .btn-cancel { background: none; border: 1px solid #2a2a2a; color: #888; }
+    .btn-cancel:hover { border-color: #555; color: #fff; }
+    .btn-submit { background: #ff0000; border: none; color: #fff; }
+    .btn-submit:hover { background: #cc0000; }
+ 
+    /* ===== TOAST ===== */
+    .toast {
+      position: fixed; bottom: 28px; left: 50%;
+      transform: translateX(-50%);
+      background: #ff0000; color: #fff;
+      padding: 12px 28px; border-radius: 4px;
+      font-size: 14px; font-weight: 700; z-index: 300;
+      opacity: 0; transition: opacity .3s; white-space: nowrap;
+      pointer-events: none; font-family: 'Cairo', sans-serif;
+    }
+    .toast.show { opacity: 1; }
+ 
+    /* ===== FOOTER ===== */
+    footer {
+      border-top: 1px solid #1c1c1c;
+      text-align: center;
+      padding: 24px 5%;
+      font-size: 13px;
+      color: #444;
+      font-weight: 700;
+    }
+    footer span { color: #ff0000; }
+ 
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 600px) {
+      .main-header { padding: 16px 4%; }
+      .hero { padding: 36px 4% 30px; }
+      .filters-bar { padding: 18px 4% 0; }
+      .store-container { padding: 24px 4% 48px; }
+      .games-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 16px; }
+    }
+  </style>
+</head>
+<body>
+ 
+<header class="main-header">
+  <div class="logo">OUR STUDIO</div>
+  <nav class="nav-links">
+    <a href="index.html" class="active">كل الألعاب</a>
+  </nav>
+</header>
+ 
+<section class="hero">
+  <div class="hero-label">🎮 مكتبتنا الخاصة</div>
+  <h1>ألعابنا — في <span>مكان واحد</span></h1>
+  <p>تصفح وحمّل وقيّم الألعاب التي نشاركها مع بعض</p>
+</section>
+ 
+<div class="filters-bar">
+  <button class="filter-chip active" onclick="setFilter('all',this)">الكل</button>
+  <button class="filter-chip" onclick="setFilter('PC',this)">PC</button>
+  <button class="filter-chip" onclick="setFilter('Android',this)">Android</button>
+  <button class="filter-chip" onclick="setFilter('أكشن',this)">أكشن</button>
+  <button class="filter-chip" onclick="setFilter('مغامرة',this)">مغامرة</button>
+  <button class="filter-chip" onclick="setFilter('رياضة',this)">رياضة</button>
+  <button class="filter-chip" onclick="setFilter('RPG',this)">RPG</button>
+</div>
+ 
+<main class="store-container">
+  <h1 class="section-title" id="section-label">جميع الألعاب</h1>
+  <div class="games-grid" id="games-grid"></div>
+</main>
+ 
+<div class="modal-bg" id="rate-modal" style="display:none" onclick="if(event.target===this)this.style.display='none'">
+  <div class="modal">
+    <h3>قيّم اللعبة</h3>
+    <div class="form-row">
+      <label>تقييمك</label>
+      <div class="star-picker" id="star-picker">
+        <span class="sp" onclick="setStar(1)">★</span>
+        <span class="sp" onclick="setStar(2)">★</span>
+        <span class="sp" onclick="setStar(3)">★</span>
+        <span class="sp" onclick="setStar(4)">★</span>
+        <span class="sp" onclick="setStar(5)">★</span>
+      </div>
+    </div>
+    <div class="form-row">
+      <label>اسمك (اختياري)</label>
+      <input type="text" id="r-name" placeholder="زائر مجهول">
+    </div>
+    <div class="form-row">
+      <label>تعليقك (اختياري)</label>
+      <textarea id="r-comment" rows="2" placeholder="ما رأيك في هذه اللعبة؟"></textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="document.getElementById('rate-modal').style.display='none'">إلغاء</button>
+      <button class="btn-submit" onclick="submitRating()">إرسال التقييم</button>
+    </div>
+  </div>
+</div>
+ 
+<div class="toast" id="toast"></div>
+ 
+<footer>OUR STUDIO <span>©</span> 2026 — جميع الحقوق محفوظة</footer>
+ 
+<script>
+  /*
+  ===================================================================
+  ★ انزل هنا مباشرة لتعديل ألعابك! هذا هو الجزء المخصص لك ★
+  ===================================================================
+  */
+  const GAMES = [
+    {
+      id: 1,                       // رقم اللعبة الفريد (لا تكرره)
+      title: "اسم لعبتك الأولى",   // اكتب اسم اللعبة هنا
+      platform: "PC / Android",    // نظام التشغيل المخصص لها
+      genre: "أكشن",               // صنف اللعبة ليشتغل الفلتر في الأعلى
+      rating: 4.8,                 // التقييم الافتراضي من 5 نجوم
+      poster: "game1-poster.jpg",  // اسم ملف البوستر، اتركه فارغاً هكذا "" إذا لم تملك صورة
+      emoji: "⚔️",                 // الإيموجي الذي سيظهر كخلفية لو لم تضع صورة
+      link: "رابط_ميديا_فاير_هنا",  // ضع رابط تحميل اللعبة هنا بين علامتي الاقتباس
+      isNew: true,                 // اكتب true ليظهر شعار (NEW) باللون الأحمر أو false لإلغائه
+      downloads: 150,              // الرقم البدائي لعدد مرات التحميل
+      reviews: []                  // مخصص لحفظ تقييمات الزوار (لا تلمسه)
+    }, // ← انتبه لهذه الفاصلة! تفصل بين كل لعبة ولعبة أخرى
+  ];
+  /*
+  ===================================================================
+  ★ هنا تنتهي مصفوفة الألعاب! الأكواد بالأسفل هي المحرك البرمجي للموقع ★
+  ===================================================================
+  */
+
+  let ratingTarget = null, selectedStar = 0, activeFilter = 'all';
+ 
+  function avgRating(g) {
+    if (!g.reviews.length) return g.rating.toFixed(1);
+    const all = [g.rating, ...g.reviews.map(r => r.stars)];
+    return (all.reduce((a,b)=>a+b,0) / all.length).toFixed(1);
+  }
+ 
+  function render() {
+    const filtered = activeFilter === 'all'
+      ? GAMES
+      : GAMES.filter(g => g.platform.includes(activeFilter) || g.genre === activeFilter);
+ 
+    document.getElementById('section-label').textContent =
+      activeFilter === 'all'
+        ? `جميع الألعاب · ${GAMES.length}`
+        : `${activeFilter} · ${filtered.length}`;
+ 
+    document.getElementById('games-grid').innerHTML = filtered.map(g => {
+      const avg = avgRating(g);
+      const total = 1 + g.reviews.length;
+      const posterTag = g.poster
+        ? `<img src="${g.poster}" alt="${g.title}" class="game-poster"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
+        : '';
+      return `
+        <div class="game-card">
+          <div class="poster-container">
+            ${posterTag}
+            <div class="poster-placeholder" style="${g.poster ? 'display:none' : ''}">
+              ${g.emoji || '🎮'}
+            </div>
+            ${g.isNew ? '<span class="badge-new">NEW</span>' : ''}
+            <div class="hover-overlay">
+              <button class="btn-download ${g._downloaded ? 'done' : ''}"
+                onclick="event.stopPropagation(); downloadGame(${g.id}, this)">
+                ${g._downloaded ? '✓ تم التحميل' : '⬇ تحميل الآن'}
+              </button>
+              <button class="btn-rate" onclick="event.stopPropagation(); openRate(${g.id})">
+                ★ قيّم اللعبة
+              </button>
+            </div>
+          </div>
+          <div class="game-info">
+            <h2 class="game-name">${g.title}</h2>
+            <div class="game-meta">
+              <span class="game-rating">
+                ★ ${avg}
+                <span class="rating-count">(${total})</span>
+              </span>
+              <span class="game-platform">${g.platform}</span>
+            </div>
+            <div class="game-downloads">⬇ ${g.downloads} تحميل</div>
+          </div>
+        </div>`;
+    }).join('');
+  }
+ 
+  function setFilter(val, el) {
+    activeFilter = val;
+    document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+    el.classList.add('active');
+    render();
+  }
+ 
+  function downloadGame(id, btn) {
+    const g = GAMES.find(x => x.id === id);
+    if (!g) return;
+    g.downloads++;
+    g._downloaded = true;
+    if (g.link) window.open(g.link, '_blank');
+    btn.textContent = '✓ تم التحميل';
+    btn.classList.add('done');
+    render();
+    showToast('⬇ بدأ التحميل!');
+  }
+ 
+  function openRate(id) {
+    ratingTarget = id;
+    selectedStar = 0;
+    updateStars();
+    document.getElementById('r-name').value = '';
+    document.getElementById('r-comment').value = '';
+    document.getElementById('rate-modal').style.display = 'flex';
+  }
+ 
+  function setStar(n) { selectedStar = n; updateStars(); }
+  function updateStars() {
+    document.querySelectorAll('.sp').forEach((s,i) => s.classList.toggle('on', i < selectedStar));
+  }
+ 
+  function submitRating() {
+    if (!selectedStar) { showToast('اختر عدد النجوم أولاً'); return; }
+    const g = GAMES.find(x => x.id === ratingTarget);
+    if (!g) return;
+    g.reviews.push({
+      user:  document.getElementById('r-name').value.trim() || 'زائر',
+      stars: selectedStar,
+      text:  document.getElementById('r-comment').value.trim()
+    });
+    document.getElementById('rate-modal').style.display = 'none';
+    render();
+    showToast('✓ شكراً! تم إرسال تقييمك');
+  }
+ 
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2600);
+  }
+ 
+  render();
+</script>
+</body>
+</html>
