@@ -360,6 +360,8 @@
   <button class="filter-chip" onclick="setFilter('مغامرة',this)">مغامرة</button>
   <button class="filter-chip" onclick="setFilter('رياضة',this)">رياضة</button>
   <button class="filter-chip" onclick="setFilter('RPG',this)">RPG</button>
+  <button class="filter-chip" onclick="setFilter('رعب',this)">رعب</button>
+  <button class="filter-chip" onclick="setFilter('سولز',this)">سولز</button>
 </div>
  
 <main class="store-container">
@@ -407,18 +409,31 @@
   */
   const GAMES = [
     {
-      id: 1,                       // رقم اللعبة الفريد (لا تكرره)
-      title: "CRESTWOOD",   // اكتب اسم اللعبة هنا
-      platform: "PC",    // نظام التشغيل المخصص لها
-      genre: "أكشن",               // صنف اللعبة ليشتغل الفلتر في الأعلى
-      rating: 4.8,                 // التقييم الافتراضي من 5 نجوم
-      poster: "Mainmenu.png",  // اسم ملف البوستر، اتركه فارغاً هكذا "" إذا لم تملك صورة
-      emoji: "⚔️",                 // الإيموجي الذي سيظهر كخلفية لو لم تضع صورة
-      link: "رابط_ميديا_فاير_هنا",  // ضع رابط تحميل اللعبة هنا بين علامتي الاقتباس
-      isNew: true,                 // اكتب true ليظهر شعار (NEW) باللون الأحمر أو false لإلغائه
-      downloads: 150,              // الرقم البدائي لعدد مرات التحميل
-      reviews: []                  // مخصص لحفظ تقييمات الزوار (لا تلمسه)
-    }, // ← انتبه لهذه الفاصلة! تفصل بين كل لعبة ولعبة أخرى
+      id: 1,                       
+      title: "CRESTWOOD",   
+      platform: "PC",    
+      genre: "رعب",               
+      rating: 4.8,                 
+      poster: "Mainmenu.png",  
+      emoji: "⚔️",                 
+      link: "رابط_ميديا_فاير_هنا",  
+      isNew: true,                 
+      downloads: 150,              
+      reviews: []                  
+    }, 
+    {
+      id: 2,                       
+      title: "Anti-zombie",   
+      platform: "PC",    
+      genre: "RPG / أكشن",         // تجمع بين التصنيفين معاً هنا وتظهر في الفلاتر
+      rating: 4.8,                 
+      poster: "MINE.png",  
+      emoji: "⚔️",                 
+      link: "رابط_ميديا_فاير_هنا",  
+      isNew: true,                 
+      downloads: 85,               
+      reviews: []                  
+    }
   ];
   /*
   ===================================================================
@@ -435,9 +450,10 @@
   }
  
   function render() {
+    // تم التعديل هنا لاستخدام .includes للبحث عن الكلمات الجزئية في التصنيف والتوافق مع الفلاتر المتعددة
     const filtered = activeFilter === 'all'
       ? GAMES
-      : GAMES.filter(g => g.platform.includes(activeFilter) || g.genre === activeFilter);
+      : GAMES.filter(g => g.platform.includes(activeFilter) || g.genre.includes(activeFilter));
  
     document.getElementById('section-label').textContent =
       activeFilter === 'all'
